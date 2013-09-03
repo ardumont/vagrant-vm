@@ -7,3 +7,5 @@ hostname_do_not_check_in.txt
 share/apps
 boxes
 
+/*.deb
+/*/*.deb
