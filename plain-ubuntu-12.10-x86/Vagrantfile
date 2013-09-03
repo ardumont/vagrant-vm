@@ -9,6 +9,7 @@ Vagrant::Config.run do |config|
 
   # Assign this VM a unique hostname
   config.vm.host_name = "#{ENV['USER']}.#{vm_type}.quantal32.vagrantup.com"
+  config.vm.network :hostonly, "192.168.33.10"
 
   # Forward a port from the guest to the host (id, guest port, host port)
   config.vm.forward_port 80, 8080, :auto => true
