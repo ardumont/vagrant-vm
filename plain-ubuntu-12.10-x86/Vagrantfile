@@ -1,4 +1,13 @@
 Vagrant::Config.run do |config|
+  #
+  # config relative to the ssh connection, here we want to forward X
+  #
+  config.ssh.forward_x11 = true
+
+  #
+  # vm relative setup
+  #
+
   vm_type = 'plain'
 
   # Every Vagrant virtual environment requires a box to build off of.
