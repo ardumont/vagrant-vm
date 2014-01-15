@@ -12,7 +12,8 @@ Vagrant::Config.run do |config|
 
   # Forward a port from the guest to the host (id, guest port, host port)
   config.vm.forward_port 9000, 9000, :auto => true # Sonar Web interface port
-  config.vm.forward_port   80, 8080, :auto => true # Apache reverse proxy port
+  config.vm.forward_port 8080, 8080, :auto => true # Jenkins
+#  config.vm.forward_port   80, 8080, :auto => true # Apache reverse proxy port
   config.vm.forward_port 5432, 5432, :auto => true # PostgreSQL database port
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
@@ -24,8 +25,9 @@ Vagrant::Config.run do |config|
 
   # Share a folder to the VM (id, guest path, host path)
   config.vm.share_folder "vagrant-share", "/vagrant-share", "../share"
+  config.vm.share_folder "nsb-source", "/kyriba", "/home/tony/work/kyriba"
+  config.vm.share_folder "my-home-tony", "/myhometony", "/home/tony"
 
   # Set memory allocated to the VM in MB
-  config.vm.customize ['modifyvm', :id, '--memory', '1024']
+  config.vm.customize ['modifyvm', :id, '--memory', '2048']
 end
-
