@@ -1,4 +1,6 @@
-Vagrant::Config.run do |config|
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   vm_type = 'sonar'
 
   # Every Vagrant virtual environment requires a box to build off of.
@@ -8,26 +10,42 @@ Vagrant::Config.run do |config|
   config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
 
   # Assign this VM a unique hostname
-  config.vm.host_name = "#{ENV['USER']}.#{vm_type}.precise64.vagrantup.com"
+  config.vm.hostname = "#{ENV['USER']}.#{vm_type}.precise64.vagrantup.com"
 
-  # Forward a port from the guest to the host (id, guest port, host port)
-  config.vm.forward_port 9000, 9000, :auto => true # Sonar Web interface port
-  config.vm.forward_port 8080, 8090, :auto => true # Jenkins
-#  config.vm.forward_port   80, 8080, :auto => true # Apache reverse proxy port
-  config.vm.forward_port 5432, 5432, :auto => true # PostgreSQL database port
+#   # Forward a port from the guest to the host (id, guest port, host port)
+#   config.vm.forward_port 9000, 9000, :auto => true # Sonar Web interface port
+#   config.vm.forward_port 8080, 8090, :auto => true # Jenkins
+# #  config.vm.forward_port   80, 8080, :auto => true # Apache reverse proxy port
+#   config.vm.forward_port 5432, 5432, :auto => true # PostgreSQL database port
+
+  config.vm.network :private_network, ip: "192.168.33.20"
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
   # are contained in a directory path relative to this Vagrantfile.
-  config.vm.provision :puppet do |puppet|
-    puppet.manifest_file = "#{vm_type}-ubuntu64.pp"
-    puppet.module_path = '../modules'
+  # config.vm.provision :puppet do |puppet|
+  #   puppet.manifest_file = "#{vm_type}-ubuntu64.pp"
+  #   puppet.module_path = '../modules'
+  # end
+
+  config.vm.synced_folder ".", "/share"
+  config.vm.synced_folder "../share", "/vagrant-share"
+  config.vm.synced_folder "/home/tony/work/kyriba", "/kyriba"
+  config.vm.synced_folder "/home/tony", "/myhometony"
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  config.vm.provider :virtualbox do |vb|
+    #   # Don't boot with headless mode
+    #   vb.gui = true
+    #
+    # Use VBoxManage to customize the VM. For example to change memory:
+
+    # Set memory allocated to the VM in MB
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
   end
 
-  # Share a folder to the VM (id, guest path, host path)
-  config.vm.share_folder "vagrant-share", "/vagrant-share", "../share"
-  config.vm.share_folder "nsb-source", "/kyriba", "/home/tony/work/kyriba"
-  config.vm.share_folder "my-home-tony", "/myhometony", "/home/tony"
+  # config.vm.provision :shell, :path => "bootstrap.sh"
 
-  # Set memory allocated to the VM in MB
-  config.vm.customize ['modifyvm', :id, '--memory', '2048']
 end
