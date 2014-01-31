@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
 
   # Assign this VM a unique hostname
-  config.vm.hostname = "#{ENV['USER']}.#{vm_type}.precise64.vagrantup.com"
+  config.vm.hostname = "jenkins.#{vm_type}.precise64.vagrantup.com"
 
 #   # Forward a port from the guest to the host (id, guest port, host port)
 #   config.vm.forward_port 9000, 9000, :auto => true # Sonar Web interface port
