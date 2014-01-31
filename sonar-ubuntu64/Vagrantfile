@@ -15,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #   # Forward a port from the guest to the host (id, guest port, host port)
 #   config.vm.forward_port 9000, 9000, :auto => true # Sonar Web interface port
 #   config.vm.forward_port 8080, 8090, :auto => true # Jenkins
-# #  config.vm.forward_port   80, 8080, :auto => true # Apache reverse proxy port
+#   config.vm.forward_port   80, 8080, :auto => true # Apache reverse proxy port
 #   config.vm.forward_port 5432, 5432, :auto => true # PostgreSQL database port
 
   config.vm.network :private_network, ip: "192.168.33.20"
@@ -29,8 +29,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder ".", "/share"
   config.vm.synced_folder "../share", "/vagrant-share"
-  config.vm.synced_folder "/home/tony/work/kyriba", "/kyriba"
-  config.vm.synced_folder "/home/tony", "/myhometony"
+  config.vm.synced_folder "#{ENV['HOME']}/work/kyriba", "/kyriba"
+  config.vm.synced_folder "#{ENV['HOME']}", "/myhome"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
