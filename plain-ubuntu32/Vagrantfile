@@ -1,4 +1,6 @@
-Vagrant::Config.run do |config|
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   vm_type = 'plain'
 
   # Every Vagrant virtual environment requires a box to build off of.
@@ -8,10 +10,11 @@ Vagrant::Config.run do |config|
   config.vm.box_url = 'http://files.vagrantup.com/precise32.box'
 
   # Assign this VM a unique hostname
-  config.vm.host_name = "#{ENV['USER']}.#{vm_type}.precise32.vagrantup.com"
+  config.vm.hostname = "#{ENV['USER']}.#{vm_type}.precise32.vagrantup.com"
 
   # Forward a port from the guest to the host (id, guest port, host port)
   #config.vm.forward_port 80, 8080, :auto => true
+  config.vm.network :private_network, ip: "192.168.33.100"
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
   # are contained in a directory path relative to this Vagrantfile.
@@ -21,11 +24,19 @@ Vagrant::Config.run do |config|
   end
 
   # Share a folder to the VM (id, guest path, host path)
-  config.vm.share_folder "vagrant-share", "/vagrant-share", "../share"
-  config.vm.share_folder "source", "/home/vagrant/home", ENV['HOME']
+  config.vm.synced_folder "../share", "/vagrant-share"
+  config.vm.synced_folder ENV['HOME'], "/home/vagrant/home"
 
   # https://gist.github.com/2155825
-  config.vm.customize ['storagectl', :id, '--name', 'SATA Controller', '--hostiocache', 'on' ]
-  config.vm.customize ['setextradata', :id, 'VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root', '1' ]
-end
+  config.vm.provider :virtualbox do |vb|
+    #   # Don't boot with headless mode
+    #   vb.gui = true
+    #
+    # Use VBoxManage to customize the VM. For example to change memory:
 
+    # Set memory allocated to the VM in MB
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
+    vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--hostiocache', 'on' ]
+    vb.customize ['setextradata', :id, 'VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root', '1' ]
+  end
+end
