@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #   config.vm.forward_port 9000, 9000, :auto => true # Sonar Web interface port
 #   config.vm.forward_port 8080, 8090, :auto => true # Jenkins
 #   config.vm.forward_port   80, 8080, :auto => true # Apache reverse proxy port
-#   config.vm.forward_port 5432, 5432, :auto => true # PostgreSQL database port
+   config.vm.forward_port 49153, 49153, :auto => true # PostgreSQL database port
 
   config.vm.network :private_network, ip: "192.168.33.20"
 
