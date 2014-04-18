@@ -12,10 +12,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Assign this VM a unique hostname
   config.vm.hostname = "jenkins.#{vm_type}.precise64.vagrantup.com"
 
-#   # Forward a port from the guest to the host (id, guest port, host port)
-  # config.vm.network "forwarded_port", :guest 9000, :host 9000
-  config.vm.network "forwarded_port", :guest 8080, :host 8090
-  # config.vm.network "forwarded_port", :guest   80, :host 8080
+  # Forward a port from the guest to the host (id, guest port, host port)
+  # config.vm.network "forwarded_port", guest: 9000, host: 9000
+  config.vm.network "forwarded_port", guest: 8080, host: 8090
+  # config.vm.network "forwarded_port", guest:   80, host: 8080
 
   config.vm.network :private_network, ip: "192.168.33.20"
 
